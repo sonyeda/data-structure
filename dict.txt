@@ -1,0 +1,614 @@
+Absolutely. **Dictionary traversal** is one of the most important Python topics for DSA because **hash maps** in Python are implemented using dictionaries (`dict`). Many LeetCode problems (Two Sum, Group Anagrams, Top K Frequent Elements, etc.) rely heavily on dictionary traversal.
+
+Let's learn it from the beginning.
+
+---
+
+# Step 1: What is a Dictionary?
+
+A **list** stores values only.
+
+```python
+marks = [85, 90, 78]
+```
+
+Memory looks like
+
+| Index | Value |
+| ----- | ----- |
+| 0     | 85    |
+| 1     | 90    |
+| 2     | 78    |
+
+You access elements by **index**.
+
+```python
+marks[0]
+```
+
+Output
+
+```text
+85
+```
+
+---
+
+A **dictionary** stores **key-value pairs**.
+
+```python
+student_scores = {
+    "Alice": 85,
+    "Bob": 90,
+    "Charlie": 78
+}
+```
+
+Think of it like a real dictionary.
+
+```
+Word         Meaning
+
+Apple   →    Fruit
+Book    →    Pages
+Car     →    Vehicle
+```
+
+Python dictionary
+
+```
+Alice   →   85
+Bob     →   90
+Charlie →   78
+```
+
+Instead of using numbers (0,1,2...), we use **keys**.
+
+---
+
+## Internal Picture
+
+Imagine Python storing
+
+```
+student_scores
+
++----------------------+
+| Alice   → 85         |
+| Bob     → 90         |
+| Charlie → 78         |
++----------------------+
+```
+
+Notice
+
+There are two things stored.
+
+```
+Key       Value
+
+Alice     85
+Bob        90
+Charlie    78
+```
+
+---
+
+# Accessing a Dictionary
+
+Instead of index
+
+```python
+marks[0]
+```
+
+we use the key
+
+```python
+student_scores["Alice"]
+```
+
+Output
+
+```text
+85
+```
+
+Similarly
+
+```python
+student_scores["Bob"]
+```
+
+Output
+
+```text
+90
+```
+
+---
+
+# Traversal 1 — Traversing Keys
+
+```python
+for name in student_scores:
+    print(name)
+```
+
+Many beginners think
+
+```
+name = value
+```
+
+No.
+
+Python is actually doing
+
+```
+First key
+↓
+
+Alice
+```
+
+Second key
+
+```
+Bob
+```
+
+Third key
+
+```
+Charlie
+```
+
+Output
+
+```
+Alice
+Bob
+Charlie
+```
+
+Notice
+
+Only keys are returned.
+
+---
+
+## Internal Working
+
+Iteration 1
+
+```
+name = "Alice"
+```
+
+Iteration 2
+
+```
+name = "Bob"
+```
+
+Iteration 3
+
+```
+name = "Charlie"
+```
+
+Exactly like list traversal.
+
+List
+
+```python
+for mark in marks:
+```
+
+Dictionary
+
+```python
+for name in student_scores:
+```
+
+The difference is
+
+List returns
+
+```
+85
+90
+78
+```
+
+Dictionary returns
+
+```
+Alice
+Bob
+Charlie
+```
+
+because dictionaries iterate over **keys** by default.
+
+---
+
+## Why only keys?
+
+Suppose you have
+
+```
+Alice → 85
+```
+
+Once Python knows
+
+```
+Alice
+```
+
+it can easily find
+
+```python
+student_scores["Alice"]
+```
+
+which gives
+
+```
+85
+```
+
+So
+
+```python
+for name in student_scores:
+    print(name, student_scores[name])
+```
+
+Output
+
+```
+Alice 85
+Bob 90
+Charlie 78
+```
+
+---
+
+# Traversal 2 — Traversing Values
+
+Sometimes we don't care about names.
+
+We only want scores.
+
+```python
+for score in student_scores.values():
+    print(score)
+```
+
+Output
+
+```
+85
+90
+78
+```
+
+Notice
+
+`.values()`
+
+returns only
+
+```
+85
+90
+78
+```
+
+---
+
+Internally
+
+```
+.values()
+
+↓
+
+85
+
+↓
+
+90
+
+↓
+
+78
+```
+
+Iteration 1
+
+```
+score = 85
+```
+
+Iteration 2
+
+```
+score = 90
+```
+
+Iteration 3
+
+```
+score = 78
+```
+
+---
+
+# Traversal 3 — Traversing Key-Value Pairs
+
+This is the one you'll use the most.
+
+```python
+for name, score in student_scores.items():
+    print(name, score)
+```
+
+Output
+
+```
+Alice 85
+Bob 90
+Charlie 78
+```
+
+---
+
+## What does `.items()` return?
+
+Think of
+
+```python
+student_scores.items()
+```
+
+as producing
+
+```
+("Alice",85)
+
+("Bob",90)
+
+("Charlie",78)
+```
+
+Each iteration returns **one tuple**.
+
+Iteration 1
+
+```
+("Alice",85)
+```
+
+Python automatically unpacks it.
+
+```
+name = "Alice"
+
+score = 85
+```
+
+Iteration 2
+
+```
+("Bob",90)
+```
+
+becomes
+
+```
+name = "Bob"
+
+score = 90
+```
+
+Iteration 3
+
+```
+("Charlie",78)
+```
+
+becomes
+
+```
+name = "Charlie"
+
+score = 78
+```
+
+This is called **tuple unpacking**.
+
+---
+
+# Visual Comparison
+
+Suppose
+
+```python
+student_scores = {
+    "Alice":85,
+    "Bob":90,
+    "Charlie":78
+}
+```
+
+### Using dictionary directly
+
+```python
+for x in student_scores:
+```
+
+Returns
+
+```
+Alice
+Bob
+Charlie
+```
+
+Only keys.
+
+---
+
+### Using `.values()`
+
+```python
+for x in student_scores.values():
+```
+
+Returns
+
+```
+85
+90
+78
+```
+
+Only values.
+
+---
+
+### Using `.items()`
+
+```python
+for x in student_scores.items():
+```
+
+Returns
+
+```
+("Alice",85)
+
+("Bob",90)
+
+("Charlie",78)
+```
+
+Entire pair.
+
+---
+
+### Using tuple unpacking
+
+```python
+for name, score in student_scores.items():
+```
+
+Python does
+
+```
+("Alice",85)
+
+↓
+
+name = Alice
+
+score = 85
+```
+
+Automatically.
+
+---
+
+# Why is `.items()` preferred?
+
+Suppose you write
+
+```python
+for name in student_scores:
+    print(name, student_scores[name])
+```
+
+Every iteration:
+
+1. Python gets the key.
+2. Then it performs another dictionary lookup to fetch the value.
+
+With
+
+```python
+for name, score in student_scores.items():
+```
+
+Python gives you both key and value together, so the code is cleaner and avoids an extra lookup.
+
+---
+
+# Real DSA Example
+
+Suppose you count character frequencies.
+
+```python
+word = "banana"
+
+freq = {}
+
+for ch in word:
+    freq[ch] = freq.get(ch, 0) + 1
+```
+
+Now
+
+```
+freq
+
+{
+'b':1,
+'a':3,
+'n':2
+}
+```
+
+To print the frequencies
+
+```python
+for ch, count in freq.items():
+    print(ch, count)
+```
+
+Output
+
+```
+b 1
+a 3
+n 2
+```
+
+This pattern appears in many interview questions.
+
+---
+
+# Summary Table
+
+| Traversal                      | Returns         | Example Output | When to Use                                                   |
+| ------------------------------ | --------------- | -------------- | ------------------------------------------------------------- |
+| `for key in d:`                | Keys            | `Alice`, `Bob` | When you only need the keys or will look up values yourself   |
+| `for value in d.values():`     | Values          | `85`, `90`     | When you only care about the values                           |
+| `for key, value in d.items():` | Key-value pairs | `Alice 85`     | **Most common.** Use when you need both the key and the value |
+
+## A tip for DSA
+
+Whenever you see code like:
+
+```python
+for key, value in my_dict.items():
+```
+
+Read it in English as:
+
+> **"For every key-value pair in the dictionary, put the key into `key` and the value into `value`."**
+
+That's exactly what Python is doing behind the scenes. Once you're comfortable with this, dictionary-based problems like **Two Sum**, **Valid Anagram**, **Group Anagrams**, and **Top K Frequent Elements** become much easier to understand.
