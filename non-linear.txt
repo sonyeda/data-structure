@@ -1,0 +1,769 @@
+Excellent. You've now reached the point where traversal becomes **different from arrays and lists**.
+
+Until now, every data structure looked like this:
+
+```text
+10   20   30   40
+0    1    2    3
+```
+
+You could simply do
+
+```python
+for x in arr:
+```
+
+or
+
+```python
+for i in range(len(arr)):
+```
+
+because arrays and lists have **indices**.
+
+But now we'll study **non-linear data structures**, where there is **no indexing**.
+
+There are three important ones:
+
+1. Linked Lists
+2. Trees
+3. Graphs
+
+---
+
+# 1. Linked List Traversal
+
+## First, what is a Linked List?
+
+A Python list looks like this conceptually:
+
+```text
+Index
+
+0      1      2      3
+
+10     20     30     40
+```
+
+We can directly access
+
+```python
+marks[2]
+```
+
+because Python knows exactly where index 2 is.
+
+---
+
+A linked list is completely different.
+
+Instead of storing elements next to each other, every element stores:
+
+* the value
+* the address (reference) of the next node
+
+Imagine four boxes.
+
+```text
++------+------+
+| 10   |   •------+
++------+------+
+              |
+              v
+        +------+------+
+        | 20   |   •------+
+        +------+------+
+                      |
+                      v
+                +------+------+
+                | 30   |   •------+
+                +------+------+
+                              |
+                              v
+                        +------+------+
+                        | 40   | None |
+                        +------+------+
+```
+
+Every node points to the next node.
+
+The first node is called **head**.
+
+```text
+Head
+ ↓
+10 → 20 → 30 → 40 → None
+```
+
+Notice something.
+
+There are **no indexes**.
+
+You cannot write
+
+```python
+linked_list[2]
+```
+
+because linked lists don't know what "index 2" means.
+
+---
+
+# How do we traverse?
+
+We start from the head.
+
+```python
+current = head
+```
+
+Initially
+
+```text
+current
+
+↓
+
+10 →20 →30 →40
+```
+
+---
+
+## First iteration
+
+```python
+print(current.value)
+```
+
+prints
+
+```text
+10
+```
+
+Move to next node.
+
+```python
+current = current.next
+```
+
+Now
+
+```text
+10 →20 →30 →40
+     ↑
+ current
+```
+
+---
+
+Second iteration
+
+Print
+
+```text
+20
+```
+
+Move again.
+
+```text
+10 →20 →30 →40
+         ↑
+      current
+```
+
+---
+
+Third iteration
+
+Print
+
+```text
+30
+```
+
+Move again.
+
+```text
+10 →20 →30 →40
+             ↑
+          current
+```
+
+---
+
+Fourth iteration
+
+Print
+
+```text
+40
+```
+
+Move again.
+
+```python
+current = current.next
+```
+
+Now
+
+```text
+current = None
+```
+
+The loop ends.
+
+---
+
+That's why the code is
+
+```python
+current = head
+
+while current is not None:
+    print(current.value)
+    current = current.next
+```
+
+Notice
+
+You're manually moving a pointer.
+
+---
+
+# Why don't we use a for loop?
+
+Because there are no indexes.
+
+We only know
+
+```text
+Current node
+
+↓
+
+Next node
+
+↓
+
+Next node
+
+↓
+
+Next node
+```
+
+---
+
+# 2. Tree Traversal
+
+Trees are even more interesting.
+
+Imagine
+
+```text
+          10
+        /    \
+      20      30
+     /  \       \
+    40  50      60
+```
+
+Every node can have children.
+
+Unlike a linked list,
+
+there are multiple directions.
+
+From 10
+
+you can go
+
+```text
+Left
+
+or
+
+Right
+```
+
+So traversal becomes more complicated.
+
+---
+
+# Depth First Search (DFS)
+
+DFS means
+
+> Go as deep as possible before coming back.
+
+Imagine exploring a cave.
+
+```text
+Start
+
+↓
+
+Go deeper
+
+↓
+
+Go deeper
+
+↓
+
+Dead end
+
+↓
+
+Come back
+
+↓
+
+Explore another path
+```
+
+---
+
+Look at this tree.
+
+```text
+          A
+        /   \
+       B     C
+      / \
+     D   E
+```
+
+DFS starts at A.
+
+```text
+A
+```
+
+Then goes left.
+
+```text
+A
+
+↓
+
+B
+```
+
+Then left again.
+
+```text
+A
+
+↓
+
+B
+
+↓
+
+D
+```
+
+D has no children.
+
+Come back.
+
+```text
+A
+
+↓
+
+B
+```
+
+Now explore E.
+
+```text
+A
+
+↓
+
+B
+
+↓
+
+E
+```
+
+Come back.
+
+Return to A.
+
+Now explore C.
+
+Final order
+
+```text
+A
+
+B
+
+D
+
+E
+
+C
+```
+
+---
+
+# Preorder Traversal
+
+The code you showed is called **Preorder Traversal**.
+
+```python
+def traverse_tree(node):
+
+    if node is None:
+        return
+
+    print(node.value)
+
+    traverse_tree(node.left)
+
+    traverse_tree(node.right)
+```
+
+Let's execute it.
+
+Tree
+
+```text
+          A
+        /   \
+       B     C
+      / \
+     D   E
+```
+
+Start
+
+```
+traverse(A)
+```
+
+Print
+
+```
+A
+```
+
+Go left.
+
+```
+traverse(B)
+```
+
+Print
+
+```
+B
+```
+
+Go left.
+
+```
+traverse(D)
+```
+
+Print
+
+```
+D
+```
+
+Left child?
+
+None.
+
+Return.
+
+Right child?
+
+None.
+
+Return.
+
+Back to B.
+
+Visit right.
+
+```
+traverse(E)
+```
+
+Print
+
+```
+E
+```
+
+Return.
+
+Back to A.
+
+Visit right.
+
+```
+traverse(C)
+```
+
+Print
+
+```
+C
+```
+
+Done.
+
+Output
+
+```text
+A B D E C
+```
+
+---
+
+## Three kinds of DFS
+
+### Preorder
+
+Visit node first.
+
+```text
+Root
+
+↓
+
+Left
+
+↓
+
+Right
+```
+
+Output
+
+```text
+A B D E C
+```
+
+---
+
+### Inorder
+
+Visit left first.
+
+```text
+Left
+
+↓
+
+Root
+
+↓
+
+Right
+```
+
+Output
+
+```text
+D B E A C
+```
+
+Very important in Binary Search Trees because it visits values in sorted order.
+
+---
+
+### Postorder
+
+Visit children first.
+
+```text
+Left
+
+↓
+
+Right
+
+↓
+
+Root
+```
+
+Output
+
+```text
+D E B C A
+```
+
+Useful when deleting or freeing a tree.
+
+---
+
+# 3. Breadth First Search (BFS)
+
+DFS goes **deep**.
+
+BFS goes **level by level**.
+
+Tree
+
+```text
+          A
+        /   \
+       B     C
+      / \     \
+     D   E     F
+```
+
+Instead of going down,
+
+BFS visits
+
+Level 1
+
+```text
+A
+```
+
+Level 2
+
+```text
+B C
+```
+
+Level 3
+
+```text
+D E F
+```
+
+Output
+
+```text
+A B C D E F
+```
+
+---
+
+# Why use a Queue?
+
+Think of people waiting in line.
+
+```text
+Queue
+
+A
+
+↓
+
+B
+
+↓
+
+C
+```
+
+First person enters.
+
+First person leaves.
+
+FIFO
+
+(First In First Out)
+
+That's exactly how BFS works.
+
+When visiting A, we enqueue its children (B and C). Then we process B, then C, then their children, always taking the oldest waiting node first.
+
+Typical BFS code:
+
+```python
+from collections import deque
+
+queue = deque([root])
+
+while queue:
+    node = queue.popleft()
+    print(node.value)
+
+    if node.left:
+        queue.append(node.left)
+
+    if node.right:
+        queue.append(node.right)
+```
+
+---
+
+# Comparison
+
+| Data Structure | Shape                                    | Traversal                       |
+| -------------- | ---------------------------------------- | ------------------------------- |
+| Array/List     | Linear                                   | `for` loop or indexing          |
+| Linked List    | Linear (connected by pointers)           | `while current:`                |
+| Tree           | Hierarchical                             | DFS or BFS                      |
+| Graph          | Network (nodes can connect in many ways) | DFS or BFS with a `visited` set |
+
+---
+
+# When will you use these in DSA?
+
+| Problem Type       | Traversal                       |
+| ------------------ | ------------------------------- |
+| Arrays             | `for` loop                      |
+| Strings            | `for` loop                      |
+| Dictionaries       | `.items()`                      |
+| Linked Lists       | `while current:`                |
+| Binary Search Tree | DFS (often recursive)           |
+| Binary Tree        | DFS or BFS                      |
+| Graphs             | DFS or BFS with a `visited` set |
+
+---
+
+## The big picture
+
+Everything you've learned so far fits together like this:
+
+```text
+Linear Data Structures
+│
+├── Array/List
+│      ├── for
+│      ├── range()
+│      ├── enumerate()
+│      └── zip()
+│
+├── Dictionary
+│      ├── keys()
+│      ├── values()
+│      └── items()
+│
+└── Linked List
+       └── while current:
+
+Non-Linear Data Structures
+│
+├── Tree
+│      ├── DFS
+│      │     ├── Preorder
+│      │     ├── Inorder
+│      │     └── Postorder
+│      └── BFS
+│
+└── Graph
+       ├── DFS
+       └── BFS
+```
+
+This progression is exactly how most DSA courses are organized: first master linear traversals (arrays, lists, dictionaries), then pointer-based traversal (linked lists), and finally recursive and queue-based traversals for trees and graphs. Understanding **why** each structure needs a different traversal strategy is more important than memorizing the code.
