@@ -48,3 +48,17 @@ elif b >a and b>c :
   print("yes1")
 elif c>a and c>b :
   print("yes3")
+
+
+
+29 — Character Checker, the task is to take one character and determine whether it is:
+char = input("Enter a character: ")
+
+if char.isupper():
+    print("Uppercase")
+elif char.islower():
+    print("Lowercase")
+elif char.isdigit():
+    print("Digit")
+else:
+    print("Special character")
